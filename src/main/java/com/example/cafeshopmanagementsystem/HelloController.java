@@ -1,8 +1,11 @@
 package com.example.cafeshopmanagementsystem;
 
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 
 public class HelloController {
     @FXML
@@ -47,9 +50,34 @@ public class HelloController {
     @FXML
     private Button side_alreadyHave;
 
-    public void switchForm(){
+    public void switchForm(ActionEvent event){
+        TranslateTransition slider = new TranslateTransition();
+        if (event.getSource() == slide_Btn) {
+            slider.setNode(side_form);
+            slider.setToX(300);
+            slider.setDuration(Duration.seconds(.5));
+
+            slider.setOnFinished((ActionEvent e) -> {
+                side_alreadyHave.setVisible(true);
+                side_createBtn.setVisible(false);
+            });
+
+            slider.play();
+        }
+        else if (event.getSource() == side_alreadyHave) {
+            slider.setNode(side_form);
+            slider.setToX(0);
+            slider.setDuration(Duration.seconds(.5));
+
+            slider.setOnFinished((ActionEvent e) -> {
+                side_alreadyHave.setVisible(false);
+                side_createBtn.setVisible(true);
+            });
+            slider.play();
+        }
 
     }
+
 
 
 
