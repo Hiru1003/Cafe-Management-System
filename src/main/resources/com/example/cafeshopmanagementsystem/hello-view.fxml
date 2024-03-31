@@ -34,7 +34,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <PasswordField fx:id="su_password" layoutX="24.0" layoutY="157.0" prefWidth="220.0" promptText="Password" />
+                  <PasswordField fx:id="su_password" layoutX="27.0" layoutY="157.0" prefWidth="220.0" promptText="Password" />
                   <Button fx:id="su_signupBtn" layoutX="28.0" layoutY="316.0" mnemonicParsing="false" prefWidth="220.0" style="-fx-border-color: black; -fx-background-color: transparent; -fx-text-fill: black;" text="Register" />
                   <ComboBox fx:id="su_question" layoutX="26.0" layoutY="212.0" prefWidth="220.0" promptText="Question" style="-fx-background-color: #fff;" />
                   <TextField fx:id="su_username" layoutX="26.0" layoutY="106.0" prefWidth="220.0" promptText="Username" />
@@ -43,13 +43,18 @@
             </AnchorPane>
             <AnchorPane fx:id="side_form" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: #a4e9f2;">
                <children>
-                  <Label layoutX="37.0" layoutY="264.0" text="Coffee Shop Management System">
+                  <Label layoutX="104.0" layoutY="160.0" text="Coffee Mocha">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
                   <Button fx:id="side_alreadyHave" layoutX="51.0" layoutY="312.0" mnemonicParsing="false" onAction="#switchForm" prefWidth="220.0" style="-fx-border-color: black; -fx-background-color: transparent; -fx-text-fill: black;" text="Already have an account?" visible="false" />
-                  <Button fx:id="side_createBtn" layoutX="43.0" layoutY="312.0" mnemonicParsing="false" prefWidth="220.0" style="-fx-border-color: black; -fx-background-color: transparent; -fx-text-fill: black;" text="Sign Up" />
+                  <Button fx:id="side_createBtn" layoutX="43.0" layoutY="312.0" mnemonicParsing="false" onAction="#switchForm" prefWidth="220.0" style="-fx-border-color: black; -fx-background-color: transparent; -fx-text-fill: black;" text="Create an account?" textFill="WHITE" />
+                  <Label layoutX="82.0" layoutY="190.0" text="Management System">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </children>

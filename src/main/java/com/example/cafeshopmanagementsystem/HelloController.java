@@ -73,8 +73,7 @@ public class HelloController {
                 side_alreadyHave.setVisible(false);
                 side_createBtn.setVisible(true);
             });
+            slider.play();
         }
-
-        slider.play();
     }
 }
