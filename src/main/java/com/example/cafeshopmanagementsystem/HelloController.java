@@ -10,6 +10,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 public class HelloController {
 
     @FXML
@@ -50,6 +54,11 @@ public class HelloController {
 
     @FXML
     private TextField su_username;
+
+    private Connection connect;
+    private PreparedStatement prepare;
+    private ResultSet result;
+
 
 
     public void switchForm(ActionEvent event) {
