@@ -21,10 +21,12 @@ private String[] questionList = {"What is your favorite color?","What is your fa
 public void regLquestionList(){
     List<String> listQ = new ArrayList<>();
 
-    for(String data: questionList){
+    for (String data : questionList) {
         listQ.add(data);
     }
-    ObservableList listData = FXCollections.observableArrayList(listQ);
+
+    return FXCollections.observableArrayList(listQ);
+}
 }
 
 public class HelloController {
