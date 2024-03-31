@@ -1,6 +1,8 @@
 package com.example.cafeshopmanagementsystem;
 
 import javafx.animation.TranslateTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,6 +15,17 @@ import javafx.util.Duration;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+
+private String[] questionList = {"What is your favorite color?","What is your favorite food?", "What is your birthdate?"};
+public void regLquestionList(){
+    List<String> listQ = new ArrayList<>();
+
+    for(String data: questionList){
+        listQ.add(data);
+    }
+    ObservableList listData = FXCollections.observableArrayList(listQ);
+}
 
 public class HelloController {
 
