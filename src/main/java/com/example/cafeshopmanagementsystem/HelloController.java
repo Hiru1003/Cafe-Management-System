@@ -52,7 +52,7 @@ public class HelloController {
 
     public void switchForm(ActionEvent event){
         TranslateTransition slider = new TranslateTransition();
-        if (event.getSource() == slide_Btn) {
+        if (event.getSource() == side_createBtn) {
             slider.setNode(side_form);
             slider.setToX(300);
             slider.setDuration(Duration.seconds(.5));

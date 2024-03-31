@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cafeshopmanagementsystem.HelloController">
    <children>
       <AnchorPane prefHeight="400.0" prefWidth="600.0">
          <children>
@@ -49,7 +49,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Button fx:id="side_alreadyHave" layoutX="51.0" layoutY="312.0" mnemonicParsing="false" prefWidth="220.0" style="-fx-border-color: black; -fx-background-color: transparent; -fx-text-fill: black;" text="Already have and account?" />
+                  <Button fx:id="side_alreadyHave" layoutX="51.0" layoutY="312.0" mnemonicParsing="false" onAction="#switchForm" prefWidth="220.0" style="-fx-border-color: black; -fx-background-color: transparent; -fx-text-fill: black;" text="Already have and account?" />
                   <Button fx:id="side_createBtn" layoutX="43.0" layoutY="312.0" mnemonicParsing="false" prefWidth="220.0" style="-fx-border-color: black; -fx-background-color: transparent; -fx-text-fill: black;" text="Sign Up" />
                   <FontAwesomeIconView glyphName="COFFEE" layoutX="125.0" layoutY="176.0" size="52.0" />
                </children>
