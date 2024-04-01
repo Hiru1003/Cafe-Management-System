@@ -88,7 +88,9 @@ public class HelloController {
                 side_alreadyHave.setVisible(true);
                 side_createBtn.setVisible(false);
             });
+            
             slider.play();
+            
         } else if (event.getSource() == side_alreadyHave) {
             slider.setNode(side_form);
             slider.setDuration(Duration.seconds(0.5));
