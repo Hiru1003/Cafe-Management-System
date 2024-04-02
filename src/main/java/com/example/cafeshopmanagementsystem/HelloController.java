@@ -78,6 +78,20 @@ public class HelloController {
     private Connection connect;
     private PreparedStatement prepare;
     private ResultSet result;
+    private Alert alert;
+
+    public void regBtn(){
+        if (su_username.getText().isEmpty() || su_password.getText().isEmpty()
+                || su_question.getSelectionModel().getSelectedItem() == null
+                || su_asnwer.getText().isEmpty()) {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Please fill all blank fields");
+            alert.showAndWait();
+        }
+    }
+
 
     private String[] questionList = {"What is your favorite color?", "What is your favorite food?", "What is your birthdate?"};
 
