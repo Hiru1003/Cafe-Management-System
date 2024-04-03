@@ -23,7 +23,7 @@
                   </Label>
                   <PasswordField fx:id="si_passwords" layoutX="29.0" layoutY="174.0" prefWidth="220.0" promptText="Password" />
                   <Hyperlink fx:id="si_forgotPw" layoutX="32.0" layoutY="222.0" text="Forgot Password?" />
-                  <Button fx:id="si_loginBtn" layoutX="31.0" layoutY="312.0" mnemonicParsing="false" prefWidth="220.0" style="-fx-border-color: black; -fx-background-color: transparent; -fx-text-fill: black;" text="Login" />
+                  <Button fx:id="si_loginBtn" layoutX="31.0" layoutY="312.0" mnemonicParsing="false" onAction="#loginBtn" prefWidth="220.0" style="-fx-border-color: black; -fx-background-color: transparent; -fx-text-fill: black;" text="Login" />
                   <TextField fx:id="si_username" layoutX="29.0" layoutY="127.0" prefWidth="220.0" promptText="Username" />
                </children>
             </AnchorPane>
@@ -34,11 +34,11 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <PasswordField fx:id="su_password" layoutX="27.0" layoutY="157.0" prefWidth="220.0" promptText="Password" />
+                  <PasswordField fx:id="su_password" layoutX="27.0" layoutY="157.0" onAction="#regBtn" prefWidth="220.0" promptText="Password" />
                   <Button fx:id="su_signupBtn" layoutX="28.0" layoutY="316.0" mnemonicParsing="false" onAction="#regBtn" prefWidth="220.0" style="-fx-border-color: black; -fx-background-color: transparent; -fx-text-fill: black;" text="Register" />
                   <ComboBox fx:id="su_question" layoutX="26.0" layoutY="212.0" prefWidth="220.0" promptText="Question" style="-fx-background-color: #fff;" />
-                  <TextField fx:id="su_username" layoutX="26.0" layoutY="106.0" prefWidth="220.0" promptText="Username" />
-                  <TextField fx:id="su_asnwer" layoutX="28.0" layoutY="268.0" prefWidth="220.0" promptText="Answer" />
+                  <TextField fx:id="su_username" layoutX="26.0" layoutY="106.0" onAction="#regBtn" prefWidth="220.0" promptText="Username" />
+                  <TextField fx:id="su_asnwer" layoutX="28.0" layoutY="268.0" onAction="#regBtn" prefWidth="220.0" promptText="Answer" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="side_form" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: #a4e9f2;">
