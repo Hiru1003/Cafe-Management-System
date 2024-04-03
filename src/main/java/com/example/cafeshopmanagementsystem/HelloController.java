@@ -251,7 +251,6 @@ public class HelloController {
 
     }
 
-
     private String[] questionList = {"What is your favorite color?", "What is your favorite food?", "What is your birthdate?"};
 
     public void regLquestionList() {
@@ -263,6 +262,12 @@ public class HelloController {
 
         ObservableList listData = FXCollections.observableArrayList(listQ);
         su_question.setItems(listData);
+    }
+
+    public void switchForgotPass() {
+        fp_questionform.setVisible(true);
+        si_loginform.setVisible(false);
+
     }
 
 
