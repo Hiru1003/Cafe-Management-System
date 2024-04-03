@@ -14,7 +14,7 @@
    <children>
       <AnchorPane prefHeight="400.0" prefWidth="600.0">
          <children>
-            <AnchorPane fx:id="si_loginform" layoutX="304.0" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: #FFF;" visible="false">
+            <AnchorPane fx:id="si_loginform" layoutX="304.0" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: #FFF;">
                <children>
                   <Label layoutX="29.0" layoutY="59.0" text="Login Account">
                      <font>
@@ -22,7 +22,7 @@
                      </font>
                   </Label>
                   <PasswordField fx:id="si_passwords" layoutX="29.0" layoutY="174.0" prefWidth="220.0" promptText="Password" />
-                  <Hyperlink fx:id="si_forgotPw" layoutX="32.0" layoutY="222.0" onAction="#switchForgotPass" text="Forgot Password?" />
+                  <Hyperlink fx:id="si_forgotPw" layoutX="24.0" layoutY="224.0" onAction="#switchForgotPass" text="Forgot Password?" />
                   <Button fx:id="si_loginBtn" layoutX="31.0" layoutY="312.0" mnemonicParsing="false" onAction="#loginBtn" prefWidth="220.0" style="-fx-border-color: black; -fx-background-color: transparent; -fx-text-fill: black;" text="Login" />
                   <TextField fx:id="si_username" layoutX="29.0" layoutY="127.0" prefWidth="220.0" promptText="Username" />
                </children>
@@ -41,7 +41,7 @@
                   <TextField fx:id="su_asnwer" layoutX="28.0" layoutY="268.0" onAction="#regBtn" prefWidth="220.0" promptText="Answer" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="fp_questionform" layoutX="300.0" layoutY="-1.0" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: #FFF;">
+            <AnchorPane fx:id="fp_questionform" layoutX="300.0" layoutY="-1.0" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: #FFF;" visible="false">
                <children>
                   <Label layoutX="29.0" layoutY="59.0" text="Forgot Password?">
                      <font>
@@ -49,9 +49,10 @@
                      </font>
                   </Label>
                   <Button fx:id="fp_Back" layoutX="31.0" layoutY="312.0" mnemonicParsing="false" prefWidth="220.0" style="-fx-border-color: black; -fx-background-color: transparent; -fx-text-fill: black;" text="Back" />
-                  <ComboBox fx:id="fp_question" layoutX="29.0" layoutY="108.0" prefWidth="220.0" promptText="Question" style="-fx-background-color: #fff;" />
-                  <TextField fx:id="fp_answer" layoutX="29.0" layoutY="164.0" prefWidth="220.0" promptText="Answer" />
-                  <Button fx:id="fp_ProceedBtn" layoutX="31.0" layoutY="268.0" mnemonicParsing="false" prefWidth="220.0" style="-fx-border-color: black; -fx-background-color: transparent; -fx-text-fill: black;" text="Proceed" />
+                  <ComboBox fx:id="fp_question" layoutX="29.0" layoutY="155.0" prefWidth="220.0" promptText="Question" style="-fx-background-color: #fff;" />
+                  <TextField fx:id="fp_answer" layoutX="29.0" layoutY="200.0" prefWidth="220.0" promptText="Answer" />
+                  <Button fx:id="fp_ProceedBtn" layoutX="31.0" layoutY="268.0" mnemonicParsing="false" onAction="#proceedBtn" prefWidth="220.0" style="-fx-border-color: black; -fx-background-color: transparent; -fx-text-fill: black;" text="Proceed" />
+                  <TextField fx:id="fp_username" layoutX="31.0" layoutY="109.0" prefWidth="220.0" promptText="Username" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="np_newPassForm" layoutX="300.0" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: #FFF;" visible="false">

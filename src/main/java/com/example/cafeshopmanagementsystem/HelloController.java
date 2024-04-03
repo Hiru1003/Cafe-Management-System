@@ -46,6 +46,9 @@ public class HelloController {
     private TextField fp_answer;
 
     @FXML
+    private TextField fp_username;
+
+    @FXML
     private AnchorPane fp_questionform;
 
     @FXML
@@ -268,6 +271,8 @@ public class HelloController {
         fp_questionform.setVisible(true);
         si_loginform.setVisible(false);
 
+        forgotPassQuestionList();
+
     }
 
     public void forgotPassQuestionList() {
@@ -280,6 +285,50 @@ public class HelloController {
 
         ObservableList listData = FXCollections.observableArrayList(listQ);
         fp_question.setItems(listData);
+
+    }
+
+    public void proceedBtn() {
+
+        if (fp_username.getText().isEmpty() || fp_question.getSelectionModel().getSelectedItem() == null
+                || fp_answer.getText().isEmpty()) {
+
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Please fill all blank fields");
+            alert.showAndWait();
+
+        } else {
+
+            String selectData = "SELECT username, question, answer FROM employee WHERE username = ? AND question = ? AND answer = ?";
+            connect = database.connectDB();
+
+            try {
+
+                prepare = connect.prepareStatement(selectData);
+                prepare.setString(1, fp_username.getText());
+                prepare.setString(2, (String) fp_question.getSelectionModel().getSelectedItem());
+                prepare.setString(3, fp_answer.getText());
+
+                result = prepare.executeQuery();
+
+                if (result.next()) {
+                    np_newPassForm.setVisible(true);
+                    fp_questionform.setVisible(false);
+                } else {
+                    alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Incorrect Information");
+                    alert.showAndWait();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
 
     }
 
