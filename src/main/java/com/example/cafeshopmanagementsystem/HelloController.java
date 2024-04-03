@@ -284,6 +284,7 @@ public class HelloController {
                 side_createBtn.setVisible(false);
                 fp_questionform.setVisible(false);
                 si_loginform.setVisible(true);
+                np_newPassForm.setVisible(false);
 
                 regLquestionList();
             });
@@ -297,6 +298,9 @@ public class HelloController {
             slider.setOnFinished((ActionEvent e) -> {
                 side_alreadyHave.setVisible(false);
                 side_createBtn.setVisible(true);
+                fp_questionform.setVisible(false);
+                si_loginform.setVisible(true);
+                np_newPassForm.setVisible(false);
             });
             slider.play();
         }
