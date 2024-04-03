@@ -274,6 +274,15 @@ public class HelloController {
         forgotPassQuestionList();
 
     }
+    public void backToLoginForm(){
+        si_loginform.setVisible(true);
+        fp_questionform.setVisible(false);
+    }
+
+    public void backToQuestionForm(){
+        fp_questionform.setVisible(true);
+        np_newPassForm.setVisible(false);
+    }
 
     public void forgotPassQuestionList() {
 
