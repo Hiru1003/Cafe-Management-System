@@ -282,6 +282,8 @@ public class HelloController {
             slider.setOnFinished((ActionEvent e) -> {
                 side_alreadyHave.setVisible(true);
                 side_createBtn.setVisible(false);
+                fp_questionform.setVisible(false);
+                si_loginform.setVisible(true);
 
                 regLquestionList();
             });
