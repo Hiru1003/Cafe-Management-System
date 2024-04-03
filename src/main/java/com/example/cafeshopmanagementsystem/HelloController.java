@@ -34,7 +34,7 @@ import javafx.util.Duration;
 public class HelloController {
 
     @FXML
-    private ComboBox<?> dp_question;
+    private ComboBox<?> fp_question;
 
     @FXML
     private Button fp_Back;
@@ -267,6 +267,19 @@ public class HelloController {
     public void switchForgotPass() {
         fp_questionform.setVisible(true);
         si_loginform.setVisible(false);
+
+    }
+
+    public void forgotPassQuestionList() {
+
+        List<String> listQ = new ArrayList<>();
+
+        for (String data : questionList) {
+            listQ.add(data);
+        }
+
+        ObservableList listData = FXCollections.observableArrayList(listQ);
+        fp_question.setItems(listData);
 
     }
 
