@@ -332,6 +332,72 @@ public class HelloController {
 
     }
 
+    public void changePassBtn() {
+
+        if (np_newPassword.getText().isEmpty() || np_confirmPass.getText().isEmpty()) {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Please fill all blank fields");
+            alert.showAndWait();
+        } else {
+
+            if (np_newPassword.getText().equals(np_confirmPass.getText())) {
+                String getDate = "SELECT date FROM employee WHERE username = '"
+                        + fp_username.getText() + "'";
+
+                connect = database.connectDB();
+
+                try {
+
+                    prepare = connect.prepareStatement(getDate);
+                    result = prepare.executeQuery();
+
+                    String date = "";
+                    if (result.next()) {
+                        date = result.getString("date");
+                    }
+
+                    String updatePass = "UPDATE employee SET password = '"
+                            + np_newPassword.getText() + "', question = '"
+                            + fp_question.getSelectionModel().getSelectedItem() + "', answer = '"
+                            + fp_answer.getText() + "', date = '"
+                            + date + "' WHERE username = '"
+                            + fp_username.getText() + "'";
+
+                    prepare = connect.prepareStatement(updatePass);
+                    prepare.executeUpdate();
+
+                    alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Information Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successfully changed Password!");
+                    alert.showAndWait();
+
+                    si_loginform.setVisible(true);
+                    np_newPassForm.setVisible(false);
+
+                    // TO CLEAR FIELDS
+                    np_confirmPass.setText("");
+                    np_newPassword.setText("");
+                    fp_question.getSelectionModel().clearSelection();
+                    fp_answer.setText("");
+                    fp_username.setText("");
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Not match");
+                alert.showAndWait();
+            }
+        }
+    }
+
+
 
     public void switchForm(ActionEvent event) {
         TranslateTransition slider = new TranslateTransition();
