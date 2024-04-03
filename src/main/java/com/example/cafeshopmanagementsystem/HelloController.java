@@ -34,6 +34,36 @@ import javafx.util.Duration;
 public class HelloController {
 
     @FXML
+    private ComboBox<?> dp_question;
+
+    @FXML
+    private Button fp_Back;
+
+    @FXML
+    private Button fp_ProceedBtn;
+
+    @FXML
+    private TextField fp_answer;
+
+    @FXML
+    private AnchorPane fp_questionform;
+
+    @FXML
+    private Button np_Back;
+
+    @FXML
+    private Button np_ChnagePassBtn;
+
+    @FXML
+    private PasswordField np_confirmPass;
+
+    @FXML
+    private AnchorPane np_newPassForm;
+
+    @FXML
+    private PasswordField np_newPassword;
+
+    @FXML
     private Hyperlink si_forgotPw;
 
     @FXML
@@ -64,7 +94,7 @@ public class HelloController {
     private PasswordField su_password;
 
     @FXML
-    private ComboBox<String> su_question;
+    private ComboBox<?> su_question;
 
     @FXML
     private Button su_signupBtn;
@@ -103,8 +133,6 @@ public class HelloController {
                 result = prepare.executeQuery();
                 // IF SUCCESSFULLY LOGIN, THEN PROCEED TO ANOTHER FORM WHICH IS OUR MAIN FORM
                 if (result.next()) {
-                    // TO GET THE USERNAME THAT USER USED
-                    data.username = si_username.getText();
 
                     alert = new Alert(AlertType.INFORMATION);
                     alert.setTitle("Information Message");
