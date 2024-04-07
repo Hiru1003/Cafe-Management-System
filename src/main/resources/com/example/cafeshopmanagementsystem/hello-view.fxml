@@ -14,7 +14,7 @@
    <children>
       <AnchorPane prefHeight="400.0" prefWidth="600.0">
          <children>
-            <AnchorPane fx:id="si_loginform" layoutX="304.0" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: #FFF;" visible="false">
+            <AnchorPane fx:id="si_loginform" layoutX="304.0" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: #FFF;">
                <children>
                   <Label layoutX="29.0" layoutY="59.0" text="Login Account">
                      <font>
@@ -41,7 +41,7 @@
                   <TextField fx:id="su_asnwer" layoutX="28.0" layoutY="268.0" onAction="#regBtn" prefWidth="220.0" promptText="Answer" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="fp_questionform" layoutX="300.0" layoutY="-1.0" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: #FFF;">
+            <AnchorPane fx:id="fp_questionform" layoutX="300.0" layoutY="-1.0" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: #FFF;" visible="false">
                <children>
                   <Label layoutX="29.0" layoutY="59.0" text="Forgot Password?">
                      <font>
