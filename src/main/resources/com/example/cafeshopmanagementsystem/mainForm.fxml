@@ -37,20 +37,15 @@
                         </ImageView>
                      </children>
                   </AnchorPane>
-                  <Label layoutX="65.0" layoutY="168.0" text="Welcome ">
+                  <Label layoutX="43.0" layoutY="168.0" text="Welcome to the system!">
                      <font>
                         <Font size="15.0" />
                      </font></Label>
-                  <Button fx:id="dashboard_btn" layoutX="26.0" layoutY="224.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="189.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Dashboard" />
-                  <Button fx:id="inventory_btn" layoutX="26.0" layoutY="280.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="189.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Inventory" />
-                  <Button fx:id="menu_btn" layoutX="25.0" layoutY="339.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="189.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Menu" />
-                  <Button fx:id="cafe_btn" layoutX="25.0" layoutY="397.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="189.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Cafe" />
-                  <Label fx:id="username" layoutX="133.0" layoutY="168.0" text="name">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="logout_btn" layoutX="82.0" layoutY="542.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Sign Out" />
+                  <Button layoutX="26.0" layoutY="224.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="189.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Dashboard" />
+                  <Button layoutX="26.0" layoutY="280.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="189.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Inventory" />
+                  <Button layoutX="25.0" layoutY="339.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="189.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Menu" />
+                  <Button layoutX="25.0" layoutY="397.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="189.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Cafe" />
+                  <Label layoutX="92.0" layoutY="559.0" text="Sign Out" textFill="#303132" />
                </children>
             </AnchorPane>
             <AnchorPane layoutX="233.0" layoutY="-13.0" prefHeight="603.0" prefWidth="870.0" visible="false">
@@ -149,11 +144,11 @@
                   <Separator layoutX="21.0" layoutY="266.0" prefHeight="0.0" prefWidth="825.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="inventory_form" layoutX="231.0" layoutY="200.0" prefHeight="600.0" prefWidth="872.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="231.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane layoutX="231.0" layoutY="200.0" prefHeight="600.0" prefWidth="872.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="231.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <AnchorPane layoutX="14.0" layoutY="13.0" prefHeight="271.0" prefWidth="843.0" style="-fx-background-color: white; -fx-border-radius: 10; -fx-background-radius: 10;">
                      <children>
-                        <TableView fx:id="inventory_tableView" layoutX="6.0" layoutY="7.0" prefHeight="257.0" prefWidth="831.0" style="-fx-background-color: transparent; -fx-border-color: #b9e3ff; -fx-border-radius: 5;">
+                        <TableView layoutX="6.0" layoutY="7.0" prefHeight="257.0" prefWidth="831.0" style="-fx-background-color: transparent; -fx-border-color: #b9e3ff; -fx-border-radius: 5;">
                            <columns>
                               <TableColumn prefWidth="105.65574645996094" text="Product ID" />
                               <TableColumn prefWidth="150.29513549804688" text="Product Name" />

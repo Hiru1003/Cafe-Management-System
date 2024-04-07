@@ -149,7 +149,7 @@ public class HelloController {
                     Stage stage = new Stage();
                     Scene scene = new Scene(root);
 
-                    stage.setTitle("Cafe Shop Management System");
+                    stage.setTitle("Cafe Mocha Management System");
                     stage.setMinWidth(1100);
                     stage.setMinHeight(600);
 
