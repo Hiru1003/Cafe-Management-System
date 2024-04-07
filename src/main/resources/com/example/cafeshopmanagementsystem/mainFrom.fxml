@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cafeshopmanagementsystem.MainFrom">
+   <children>
+      <AnchorPane layoutX="79.0" layoutY="61.0" prefHeight="600.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane layoutX="-3.0" layoutY="-4.0" prefHeight="609.0" prefWidth="218.0" style="-fx-background-color: #d8ffff;">
+               <children>
+                  <AnchorPane layoutX="-4.0" layoutY="-1.0" prefHeight="80.0" prefWidth="239.0" style="-fx-background-color: #87d9f2;">
+                     <children>
+                        <Label layoutX="86.0" layoutY="32.0" text="Cafe Mocha" textFill="#0c0d0d">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <Label layoutX="54.0" layoutY="109.0" text="Welcome to the system!" />
+                  <Button layoutX="23.0" layoutY="175.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="189.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Dashboard" />
+                  <Button layoutX="23.0" layoutY="231.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="189.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Inventory" />
+                  <Button layoutX="22.0" layoutY="290.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="189.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Menu" />
+                  <Button layoutX="22.0" layoutY="348.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="189.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Cafe" />
+                  <Label layoutX="84.0" layoutY="559.0" text="Sign Out" />
+               </children>
+            </AnchorPane>
+            <ScrollPane layoutX="247.0" layoutY="26.0" prefHeight="200.0" prefWidth="827.0">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="827.0" />
+              </content>
+            </ScrollPane>
+            <AnchorPane layoutX="255.0" layoutY="259.0" prefHeight="309.0" prefWidth="818.0" style="-fx-background-color: white; -fx-background-radius: 10;" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
