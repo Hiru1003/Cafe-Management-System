@@ -93,7 +93,25 @@ public class MainForm implements Initializable  {
     private Button inventory_importBtn;
 
     @FXML
+    private TextField inventory_price;
+
+    @FXML
+    private TextField inventory_productId;
+
+    @FXML
+    private TextField inventory_productName;
+
+    @FXML
+    private ComboBox<?> inventory_status;
+
+    @FXML
+    private TextField inventory_stock;
+
+    @FXML
     private TableView<?> inventory_tableView;
+
+    @FXML
+    private ComboBox<?> inventory_type;
 
     @FXML
     private Button inventory_updateBtn;
@@ -110,6 +128,8 @@ public class MainForm implements Initializable  {
     @FXML
     private Label username;
 
+
+
     private Alert alert;
 
     private Connection connect;
@@ -119,12 +139,48 @@ public class MainForm implements Initializable  {
 
     private Image image;
 
+    private String[] typeList = {"Meals", "Drinks"};
+
+    public void inventoryTypeList() {
+        if (inventory_type != null) {
+            List<String> typeL = new ArrayList<>();
+
+            for (String data : typeList) {
+                typeL.add(data);
+            }
+
+            ObservableList listData = FXCollections.observableArrayList(typeL);
+            inventory_type.setItems(listData);
+        } else {
+            System.err.println("ComboBox inventory_type is null.");
+        }
+    }
+
+
+    private String[] statusList = {"Available", "Unavailable"};
+
+    public void inventoryStatusList() {
+
+        List<String> statusL = new ArrayList<>();
+
+        for (String data : statusList) {
+            statusL.add(data);
+        }
+
+        ObservableList listData = FXCollections.observableArrayList(statusL);
+        inventory_status.setItems(listData);
+
+    }
+
+
+
+
 
     public void logout() {
 
         try {
 
-            alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
             alert.setContentText("Are you sure you want to logout?");
@@ -145,12 +201,14 @@ public class MainForm implements Initializable  {
 
                 stage.setScene(scene);
                 stage.show();
+
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
 
+    }
     public void displayUsername() {
         if (data.username == null || data.username.isEmpty()) {
             // If data or data.username is null or empty, set default label text
@@ -175,6 +233,8 @@ public class MainForm implements Initializable  {
     public void initialize(URL location, ResourceBundle resources) {
 
         displayUsername();
+        inventoryTypeList();
+        inventoryStatusList();
 
     }
 
