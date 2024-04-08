@@ -220,23 +220,19 @@ public class MainForm implements Initializable  {
     }
 
     public void inventoryUpdateBtn() {
-
         if (inventory_productId.getText().isEmpty()
                 || inventory_productName.getText().isEmpty()
                 || inventory_type.getSelectionModel().getSelectedItem() == null
                 || inventory_stock.getText().isEmpty()
                 || inventory_price.getText().isEmpty()
                 || inventory_status.getSelectionModel().getSelectedItem() == null
-                || data.path == null || data.id == 0) {
-
+                || data.path == null || data.id == null) { // Checking if data.id is null
             alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
             alert.setContentText("Please fill all blank fields");
             alert.showAndWait();
-
         } else {
-
             String path = data.path;
             path = path.replace("\\", "\\\\");
 
@@ -248,19 +244,18 @@ public class MainForm implements Initializable  {
                     + inventory_price.getText() + "', status = '"
                     + inventory_status.getSelectionModel().getSelectedItem() + "', image = '"
                     + path + "', date = '"
-                    + data.date + "' WHERE id = " + data.id;
+                    + data.date + "' WHERE id = " + (data.id != null ? data.id.intValue() : null); // Null check added here
 
             connect = database.connectDB();
 
             try {
-
                 alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Error Message");
                 alert.setHeaderText(null);
                 alert.setContentText("Are you sure you want to UPDATE PRoduct ID: " + inventory_productId.getText() + "?");
                 Optional<ButtonType> option = alert.showAndWait();
 
-                if (option.get().equals(ButtonType.OK)) {
+                if (option.isPresent() && option.get() == ButtonType.OK) {
                     prepare = connect.prepareStatement(updateData);
                     prepare.executeUpdate();
 
@@ -286,6 +281,7 @@ public class MainForm implements Initializable  {
             }
         }
     }
+
 
     public void inventoryDeleteBtn() {
         if (data.id == 0) {
