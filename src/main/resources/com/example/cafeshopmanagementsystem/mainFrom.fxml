@@ -15,13 +15,15 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cafeshopmanagementsystem.MainForm">
    <children>
       <AnchorPane fx:id="main_Form" layoutX="79.0" layoutY="61.0" prefHeight="600.0" prefWidth="1103.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <AnchorPane layoutX="-3.0" layoutY="-4.0" prefHeight="603.0" prefWidth="235.0" style="-fx-background-color: #d8ffff;">
+            <AnchorPane fx:id="dashboard_form" layoutX="-3.0" layoutY="-4.0" prefHeight="603.0" prefWidth="235.0" style="-fx-background-color: #d8ffff;">
                <children>
                   <AnchorPane layoutX="-4.0" layoutY="-1.0" prefHeight="148.0" prefWidth="239.0" style="-fx-background-color: #87d9f2;">
                      <children>
@@ -38,9 +40,9 @@
                      </children>
                   </AnchorPane>
                   
-                  <Button fx:id="dashboard_btn" layoutX="26.0" layoutY="224.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="189.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Dashboard" />
-                  <Button fx:id="inventory_btn" layoutX="26.0" layoutY="280.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="189.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Inventory" />
-                  <Button fx:id="menu_btn" layoutX="25.0" layoutY="339.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="189.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Menu" />
+                  <Button fx:id="dashboard_btn" layoutX="26.0" layoutY="224.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="43.0" prefWidth="189.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Dashboard" />
+                  <Button fx:id="inventory_btn" layoutX="26.0" layoutY="280.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="43.0" prefWidth="189.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Inventory" />
+                  <Button fx:id="menu_btn" layoutX="25.0" layoutY="339.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="43.0" prefWidth="189.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Menu" />
                   <Button fx:id="cafe_btn" layoutX="25.0" layoutY="397.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="189.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Cafe" />
                   <Button fx:id="logout_btn" layoutX="82.0" layoutY="542.0" mnemonicParsing="false" onAction="#logout" style="-fx-background-color: transparent;" text="Sign Out" />
                   <Label layoutX="64.0" layoutY="168.0" text="Welcome">
@@ -151,7 +153,7 @@
                   <Separator layoutX="21.0" layoutY="266.0" prefHeight="0.0" prefWidth="825.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="inventory_form" layoutX="231.0" layoutY="200.0" prefHeight="600.0" prefWidth="872.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="231.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="inventory_form" layoutX="231.0" layoutY="200.0" prefHeight="600.0" prefWidth="872.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="231.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <AnchorPane layoutX="14.0" layoutY="13.0" prefHeight="271.0" prefWidth="843.0" style="-fx-background-color: white; -fx-border-radius: 10; -fx-background-radius: 10;">
                      <children>
@@ -194,6 +196,43 @@
                      </children>
                   </AnchorPane>
                   <Separator prefHeight="2.0" prefWidth="843.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="menu_Form" layoutX="231.0" layoutY="-6.0" prefHeight="606.0" prefWidth="872.0">
+               <children>
+                  <AnchorPane layoutX="14.0" layoutY="17.0" prefHeight="574.0" prefWidth="542.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #87d9f2;">
+                     <children>
+                        <ScrollPane layoutX="15.0" layoutY="17.0" prefHeight="542.0" prefWidth="514.0">
+                           <content>
+                              <GridPane fx:id="menu_gridPane" prefHeight="28.0" prefWidth="100.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                              </GridPane>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="569.0" layoutY="16.0" prefHeight="575.0" prefWidth="293.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #87d9f2;">
+                     <children>
+                        <TableView fx:id="menu_tableView" layoutX="8.0" layoutY="10.0" prefHeight="247.0" prefWidth="279.0">
+                          <columns>
+                            <TableColumn fx:id="menu_col_productName" prefWidth="104.818359375" text="Product Name" />
+                            <TableColumn fx:id="menu_col_quantity" prefWidth="75.181640625" text="Quantity" />
+                              <TableColumn fx:id="menu_col_price" prefWidth="98.181640625" text="Price" />
+                          </columns>
+                        </TableView>
+                        <Label layoutX="69.0" layoutY="290.0" text="Total              :" />
+                        <Label layoutX="69.0" layoutY="321.0" text="Amount        :" />
+                        <Label layoutX="69.0" layoutY="353.0" text="Change        :" />
+                        <Label fx:id="menu_total" layoutX="160.0" layoutY="290.0" text="LKR 0.00" />
+                        <Label fx:id="menu_change" layoutX="160.0" layoutY="353.0" text="LKR 0.00" />
+                        <TextField fx:id="menu_amount" layoutX="158.0" layoutY="316.0" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: WHITE; -fx-border-color: #87d9f2; -fx-border-radius: 5;" />
+                        <Button fx:id="menu_payBtn" layoutX="10.0" layoutY="413.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="271.0" style="-fx-background-color: transparent; -fx-background-color: #b9e3ff;" text="Pay" />
+                        <Button fx:id="menu_removeBtn" layoutX="11.0" layoutY="474.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="133.0" style="-fx-background-color: transparent; -fx-background-color: #b9e3ff;" text="Remove" />
+                        <Button fx:id="menu_receiptBtn" layoutX="152.0" layoutY="474.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="128.0" style="-fx-background-color: transparent; -fx-background-color: #b9e3ff;" text="Reciept" />
+                     </children>
+                  </AnchorPane>
                </children>
             </AnchorPane>
          </children>

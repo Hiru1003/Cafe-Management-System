@@ -60,6 +60,9 @@ public class MainForm implements Initializable  {
     private Button inventory_clearBtn;
 
     @FXML
+    private AnchorPane dashboard_form;
+
+    @FXML
     private TableColumn<productData, String> inventory_col_date;
 
     @FXML
@@ -127,6 +130,42 @@ public class MainForm implements Initializable  {
 
     @FXML
     private Label username;
+
+    @FXML
+    private AnchorPane menu_Form;
+
+    @FXML
+    private TextField menu_amount;
+
+    @FXML
+    private Label menu_change;
+
+    @FXML
+    private TableColumn<?, ?> menu_col_price;
+
+    @FXML
+    private TableColumn<?, ?> menu_col_productName;
+
+    @FXML
+    private TableColumn<?, ?> menu_col_quantity;
+
+    @FXML
+    private GridPane menu_gridPane;
+
+    @FXML
+    private Button menu_payBtn;
+
+    @FXML
+    private Button menu_receiptBtn;
+
+    @FXML
+    private Button menu_removeBtn;
+
+    @FXML
+    private TableView<?> menu_tableView;
+
+    @FXML
+    private Label menu_total;
 
 
 
@@ -438,7 +477,97 @@ public class MainForm implements Initializable  {
 
     }
 
+    public ObservableList<productData> menuGetData() {
 
+        String sql = "SELECT * FROM product";
+
+        ObservableList<productData> listData = FXCollections.observableArrayList();
+        connect = database.connectDB();
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            productData prod;
+
+            while (result.next()) {
+                prod = new productData(result.getInt("id"),
+                        result.getString("prod_id"),
+                        result.getString("prod_name"),
+                        result.getString("type"),
+                        result.getInt("stock"),
+                        result.getDouble("price"),
+                        result.getString("image"),
+                        result.getDate("date"));
+
+                listData.add(prod);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return listData;
+    }
+
+    public void menuDisplayCard() {
+
+        cardListData.clear();
+        cardListData.addAll(menuGetData());
+
+        int row = 0;
+        int column = 0;
+
+        menu_gridPane.getChildren().clear();
+        menu_gridPane.getRowConstraints().clear();
+        menu_gridPane.getColumnConstraints().clear();
+
+        for (int q = 0; q < cardListData.size(); q++) {
+
+            try {
+                FXMLLoader load = new FXMLLoader();
+                load.setLocation(getClass().getResource("cardProduct.fxml"));
+                AnchorPane pane = load.load();
+                cardProductController cardC = load.getController();
+                cardC.setData(cardListData.get(q));
+
+                if (column == 2) {
+                    column = 0;
+                    row += 1;
+                }
+
+                menu_gridPane.add(pane, column++, row);
+
+                GridPane.setMargin(pane, new Insets(10));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void switchForm(ActionEvent event) {
+
+        if (event.getSource() == dashboard_btn) {
+            dashboard_form.setVisible(true);
+            inventory_form.setVisible(false);
+
+        } else if (event.getSource() == inventory_btn) {
+            dashboard_form.setVisible(false);
+            inventory_form.setVisible(true);
+
+            inventoryTypeList();
+            inventoryStatusList();
+            inventoryShowData();
+        } else if (event.getSource() == menu_btn) {
+            dashboard_form.setVisible(false);
+            inventory_form.setVisible(false);
+            menu_Form.setVisible(true);
+
+            menuDisplayCard();
+        }
+
+    }
     private String[] typeList = {"Meals", "Drinks"};
 
     public void inventoryTypeList() {
@@ -536,7 +665,46 @@ public class MainForm implements Initializable  {
         inventoryTypeList();
         inventoryStatusList();
         inventoryShowData();
+        menuDisplayCard();
 
     }
 
+    private int cID;
+
+    public void customerID() {
+
+        String sql = "SELECT MAX(customer_id) FROM customer";
+        connect = database.connectDB();
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                cID = result.getInt("MAX(customer_id)");
+            }
+
+            String checkCID = "SELECT MAX(customer_id) FROM receipt";
+            prepare = connect.prepareStatement(checkCID);
+            result = prepare.executeQuery();
+            int checkID = 0;
+            if (result.next()) {
+                checkID = result.getInt("MAX(customer_id)");
+            }
+
+            if (cID == 0) {
+                cID += 1;
+            } else if (cID == checkID) {
+                cID += 1;
+            }
+
+            data.cID = cID;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void menuGetTotal() {
+    }
 }
