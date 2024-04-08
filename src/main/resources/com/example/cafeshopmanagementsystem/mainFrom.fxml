@@ -19,7 +19,7 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cafeshopmanagementsystem.MainFrom">
    <children>
-      <AnchorPane layoutX="79.0" layoutY="61.0" prefHeight="600.0" prefWidth="1103.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane fx:id="main_Form" layoutX="79.0" layoutY="61.0" prefHeight="600.0" prefWidth="1103.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <AnchorPane layoutX="-3.0" layoutY="-4.0" prefHeight="603.0" prefWidth="235.0" style="-fx-background-color: #d8ffff;">
                <children>
@@ -155,13 +155,13 @@
                      <children>
                         <TableView fx:id="inventory_tableView" layoutX="6.0" layoutY="7.0" prefHeight="257.0" prefWidth="831.0" style="-fx-background-color: transparent; -fx-border-color: #b9e3ff; -fx-border-radius: 5;">
                            <columns>
-                              <TableColumn prefWidth="105.65574645996094" text="Product ID" />
-                              <TableColumn prefWidth="150.29513549804688" text="Product Name" />
-                              <TableColumn prefWidth="105.5875244140625" text="Type" />
-                              <TableColumn prefWidth="123.51922607421875" text="Stoke" />
-                              <TableColumn prefWidth="115.8797607421875" text="Price" />
-                              <TableColumn minWidth="0.0" prefWidth="98.6202392578125" text="Status" />
-                              <TableColumn prefWidth="131.4154052734375" text="Date" />
+                              <TableColumn fx:id="inventory_col_prodcutId" prefWidth="105.65574645996094" text="Product ID" />
+                              <TableColumn fx:id="inventory_col_productName" prefWidth="150.29513549804688" text="Product Name" />
+                              <TableColumn fx:id="inventory_col_type" prefWidth="105.5875244140625" text="Type" />
+                              <TableColumn fx:id="inventory_col_stoke" prefWidth="123.51922607421875" text="Stoke" />
+                              <TableColumn fx:id="inventory_col_price" prefWidth="115.8797607421875" text="Price" />
+                              <TableColumn fx:id="inventory_col_status" minWidth="0.0" prefWidth="98.6202392578125" text="Status" />
+                              <TableColumn fx:id="inventory_col_date" prefWidth="131.4154052734375" text="Date" />
                               <TableColumn prefWidth="312.7373046875" text="Price" />
                            </columns>
                         </TableView>
@@ -179,12 +179,15 @@
                         <TextField layoutX="495.0" layoutY="42.0" promptText="0" style="-fx-background-color: transparent; -fx-border-color: #b9e3ff; -fx-border-radius: 5;" />
                         <TextField layoutX="495.0" layoutY="77.0" promptText="0.00" style="-fx-background-color: transparent; -fx-border-color: #b9e3ff; -fx-border-radius: 5;" />
                         <ComboBox layoutX="159.0" layoutY="114.0" prefHeight="26.0" prefWidth="161.0" promptText="Choose Type" style="-fx-background-color: transparent; -fx-border-radius: 5; -fx-background-radius: 5; -fx-border-color: #b9e3ff;" />
-                        <AnchorPane layoutX="705.0" layoutY="39.0" prefHeight="128.0" prefWidth="124.0" style="-fx-background-color: transparent; -fx-border-color: #b9e3ff; -fx-background-radius: 5; -fx-border-radius: 5;" />
-                        <Button layoutX="707.0" layoutY="176.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" style="-fx-background-color: transparent; -fx-background-color: #b9e3ff;" text="Import" />
-                        <Button layoutX="59.0" layoutY="206.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" style="-fx-background-color: transparent; -fx-background-color: #b9e3ff;" text="Add" />
-                        <Button layoutX="194.0" layoutY="206.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" style="-fx-background-color: transparent; -fx-background-color: #b9e3ff;" text="Update" />
-                        <Button layoutX="333.0" layoutY="207.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" style="-fx-background-color: transparent; -fx-background-color: #b9e3ff;" text="Clear" />
-                        <Button layoutX="468.0" layoutY="207.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" style="-fx-background-color: transparent; -fx-background-color: #b9e3ff;" text="Delete" />
+                        <AnchorPane layoutX="705.0" layoutY="39.0" prefHeight="128.0" prefWidth="124.0" style="-fx-background-color: transparent; -fx-border-color: #b9e3ff; -fx-background-radius: 5; -fx-border-radius: 5;">
+                           <children>
+                              <ImageView fx:id="inventory_imageView" fitHeight="128.0" fitWidth="123.0" layoutX="-1.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children></AnchorPane>
+                        <Button fx:id="inventory_importBtn" layoutX="707.0" layoutY="176.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" style="-fx-background-color: transparent; -fx-background-color: #b9e3ff;" text="Import" />
+                        <Button fx:id="inventory_addBtn" layoutX="59.0" layoutY="206.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" style="-fx-background-color: transparent; -fx-background-color: #b9e3ff;" text="Add" />
+                        <Button fx:id="inventory_updateBtn" layoutX="194.0" layoutY="206.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" style="-fx-background-color: transparent; -fx-background-color: #b9e3ff;" text="Update" />
+                        <Button fx:id="inventory_clearBtn" layoutX="333.0" layoutY="207.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" style="-fx-background-color: transparent; -fx-background-color: #b9e3ff;" text="Clear" />
+                        <Button fx:id="inventory_deleteBtn" layoutX="468.0" layoutY="207.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" style="-fx-background-color: transparent; -fx-background-color: #b9e3ff;" text="Delete" />
                         <Label layoutX="429.0" layoutY="118.0" text="Status" />
                         <ComboBox layoutX="495.0" layoutY="115.0" prefHeight="26.0" prefWidth="161.0" promptText="Choose Status" style="-fx-background-color: transparent; -fx-border-radius: 5; -fx-background-radius: 5; -fx-border-color: #b9e3ff;" />
                      </children>

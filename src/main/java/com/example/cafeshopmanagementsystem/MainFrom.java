@@ -44,6 +44,72 @@ import javafx.stage.Stage;
 
 public class MainFrom implements Initializable  {
 
+    @FXML
+    private Button cafe_btn;
+
+    @FXML
+    private Button dashboard_btn;
+
+    @FXML
+    private Button inventory_addBtn;
+
+    @FXML
+    private Button inventory_btn;
+
+    @FXML
+    private Button inventory_clearBtn;
+
+    @FXML
+    private TableColumn<?, ?> inventory_col_date;
+
+    @FXML
+    private TableColumn<?, ?> inventory_col_price;
+
+    @FXML
+    private TableColumn<?, ?> inventory_col_prodcutId;
+
+    @FXML
+    private TableColumn<?, ?> inventory_col_productName;
+
+    @FXML
+    private TableColumn<?, ?> inventory_col_status;
+
+    @FXML
+    private TableColumn<?, ?> inventory_col_stoke;
+
+    @FXML
+    private TableColumn<?, ?> inventory_col_type;
+
+    @FXML
+    private Button inventory_deleteBtn;
+
+    @FXML
+    private AnchorPane inventory_form;
+
+    @FXML
+    private ImageView inventory_imageView;
+
+    @FXML
+    private Button inventory_importBtn;
+
+    @FXML
+    private TableView<?> inventory_tableView;
+
+    @FXML
+    private Button inventory_updateBtn;
+
+    @FXML
+    private Button logout_btn;
+
+    @FXML
+    private AnchorPane main_Form;
+
+    @FXML
+    private Button menu_btn;
+
+    @FXML
+    private Label username;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {}
 
