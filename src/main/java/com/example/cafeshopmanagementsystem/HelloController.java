@@ -146,7 +146,7 @@ public class HelloController {
                     alert.showAndWait();
 
                     // LINK YOUR MAIN FORM
-                    Parent root = FXMLLoader.load(getClass().getResource("mainForm.fxml"));
+                    Parent root = FXMLLoader.load(getClass().getResource("MainFrom.fxml"));
 
                     Stage stage = new Stage();
                     Scene scene = new Scene(root);
