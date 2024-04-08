@@ -57,7 +57,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="233.0" layoutY="-13.0" prefHeight="603.0" prefWidth="870.0" visible="false">
+            <AnchorPane fx:id="dashboard_form" layoutX="233.0" layoutY="-13.0" prefHeight="603.0" prefWidth="870.0">
                <children>
                   <ScrollPane layoutX="22.0" layoutY="36.0" prefHeight="218.0" prefWidth="841.0">
                      <content>
@@ -153,7 +153,7 @@
                   <Separator layoutX="21.0" layoutY="266.0" prefHeight="0.0" prefWidth="825.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="inventory_form" layoutX="231.0" layoutY="200.0" prefHeight="600.0" prefWidth="872.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="231.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="inventory_form" layoutX="233.0" layoutY="200.0" prefHeight="600.0" prefWidth="870.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="233.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <AnchorPane layoutX="14.0" layoutY="13.0" prefHeight="271.0" prefWidth="843.0" style="-fx-background-color: white; -fx-border-radius: 10; -fx-background-radius: 10;">
                      <children>
@@ -198,7 +198,7 @@
                   <Separator prefHeight="2.0" prefWidth="843.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="menu_Form" layoutX="231.0" layoutY="-6.0" prefHeight="606.0" prefWidth="872.0">
+            <AnchorPane fx:id="menu_Form" layoutX="231.0" layoutY="-6.0" prefHeight="606.0" prefWidth="872.0" visible="false">
                <children>
                   <AnchorPane layoutX="14.0" layoutY="17.0" prefHeight="574.0" prefWidth="542.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #87d9f2;">
                      <children>

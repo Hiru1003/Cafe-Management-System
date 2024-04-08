@@ -42,6 +42,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+
+
 public class MainForm implements Initializable  {
 
     @FXML
@@ -551,10 +553,12 @@ public class MainForm implements Initializable  {
         if (event.getSource() == dashboard_btn) {
             dashboard_form.setVisible(true);
             inventory_form.setVisible(false);
+            menu_Form.setVisible(false);
 
         } else if (event.getSource() == inventory_btn) {
             dashboard_form.setVisible(false);
             inventory_form.setVisible(true);
+            menu_Form.setVisible(false);
 
             inventoryTypeList();
             inventoryStatusList();
