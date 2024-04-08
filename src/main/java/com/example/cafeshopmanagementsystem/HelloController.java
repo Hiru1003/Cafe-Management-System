@@ -137,6 +137,8 @@ public class HelloController {
                 // IF SUCCESSFULLY LOGIN, THEN PROCEED TO ANOTHER FORM WHICH IS OUR MAIN FORM
                 if (result.next()) {
 
+                    data.username =si_username.getText();
+
                     alert = new Alert(AlertType.INFORMATION);
                     alert.setTitle("Information Message");
                     alert.setHeaderText(null);
