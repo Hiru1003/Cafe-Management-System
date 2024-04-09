@@ -58,14 +58,15 @@ public class cardProductController implements Initializable {
         type = prodData.getType();
         prodID = prodData.getProductId();
         prod_name.setText(prodData.getProductName());
-        prod_price.setText("LKR" + String.valueOf(prodData.getPrice()));
+        prod_price.setText("$" + String.valueOf(prodData.getPrice()));
         String path = "File:" + prodData.getImage();
-        image = new Image(path, 130, 110, false, true);
+        image = new Image(path, 190, 94, false, true);
         prod_imageView.setImage(image);
-
+        pr = prodData.getPrice();
 
     }
     private int qty;
+
     public void setQuantity() {
         spin = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
         prod_spinner.setValueFactory(spin);
@@ -74,14 +75,12 @@ public class cardProductController implements Initializable {
     private double totalP;
     private double pr;
 
-
-
     public void addBtn() {
 
         MainForm mForm = new MainForm();
         mForm.customerID();
 
-        qty = (int) prod_spinner.getValue();
+        qty = prod_spinner.getValue();
         String check = "";
         String checkAvailable = "SELECT status FROM product WHERE prod_id = '"
                 + prodID + "'";
