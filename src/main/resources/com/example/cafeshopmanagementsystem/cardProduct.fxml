@@ -42,7 +42,7 @@
                         <Insets left="25.0" />
                      </HBox.margin>
                   </Spinner>
-                  <Button fx:id="prod_addBtn" mnemonicParsing="false" prefHeight="26.0" prefWidth="73.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Add">
+                  <Button fx:id="prod_addBtn" mnemonicParsing="false" onAction="#addBtn" prefHeight="26.0" prefWidth="73.0" style="-fx-background-color: transparent; -fx-border-color: black;" text="Add">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
