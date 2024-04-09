@@ -427,9 +427,9 @@ public class HelloController {
 
                 regLquestionList();
             });
-            
+
             slider.play();
-            
+
         } else if (event.getSource() == side_alreadyHave) {
             slider.setNode(side_form);
             slider.setDuration(Duration.seconds(0.5));

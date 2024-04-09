@@ -1,21 +1,23 @@
 package com.example.cafeshopmanagementsystem;
 
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
-public class cardProductController implements Initializable {
-
+public class cardProductController {
     @FXML
     private AnchorPane card_Form;
 
@@ -80,7 +82,7 @@ public class cardProductController implements Initializable {
         MainForm mForm = new MainForm();
         mForm.customerID();
 
-        qty = prod_spinner.getValue();
+        qty = (int) prod_spinner.getValue();
         String check = "";
         String checkAvailable = "SELECT status FROM product WHERE prod_id = '"
                 + prodID + "'";
@@ -121,7 +123,7 @@ public class cardProductController implements Initializable {
             }
 
             if (!check.equals("Available") || qty == 0) {
-                alert = new Alert(Alert.AlertType.ERROR);
+                alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error Message");
                 alert.setHeaderText(null);
                 alert.setContentText("Something Wrong :3");
@@ -129,7 +131,7 @@ public class cardProductController implements Initializable {
             } else {
 
                 if (checkStck < qty) {
-                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error Message");
                     alert.setHeaderText(null);
                     alert.setContentText("Invalid. This product is Out of stock");
@@ -178,7 +180,7 @@ public class cardProductController implements Initializable {
                     prepare = connect.prepareStatement(updateStock);
                     prepare.executeUpdate();
 
-                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert = new Alert(AlertType.INFORMATION);
                     alert.setTitle("Information Message");
                     alert.setHeaderText(null);
                     alert.setContentText("Successfully Added!");
@@ -193,9 +195,8 @@ public class cardProductController implements Initializable {
 
     }
 
-    @Override
+
     public void initialize(URL location, ResourceBundle resources) {
         setQuantity();
     }
-
 }

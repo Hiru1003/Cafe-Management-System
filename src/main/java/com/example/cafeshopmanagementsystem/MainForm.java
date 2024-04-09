@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -21,9 +20,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.AreaChart;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -41,9 +37,39 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
-
-
 public class MainForm implements Initializable  {
+    @FXML
+    private Label menu_total;
+
+    @FXML
+    private GridPane menu_gridPane;
+
+    @FXML
+    private TableView<productData> menu_tableView;
+
+    @FXML
+    private TableColumn<customersData, String> customers_col_cashier;
+
+    @FXML
+    private TableColumn<customersData, String> customers_col_customerID;
+
+    @FXML
+    private TableColumn<customersData, String> customers_col_date;
+
+    @FXML
+    private TableColumn<customersData, String> customers_col_total;
+
+    @FXML
+    private TableView<customersData> customers_tableView;
+
+    @FXML
+    private TextField menu_amount;
+
+    @FXML
+    private Button menu_btn;
+
+    @FXML
+    private Label menu_change;
 
     @FXML
     private Button cafe_btn;
@@ -61,7 +87,13 @@ public class MainForm implements Initializable  {
     private Button inventory_clearBtn;
 
     @FXML
-    private AnchorPane dashboard_form;
+    private Button customers_btn;
+
+    @FXML
+    private AnchorPane customers_form;
+
+    @FXML
+    private AnchorPane menu_Form;
 
     @FXML
     private TableColumn<productData, String> inventory_col_date;
@@ -85,7 +117,19 @@ public class MainForm implements Initializable  {
     private TableColumn<productData, String> inventory_col_type;
 
     @FXML
+    private TableColumn<?, ?> menu_col_price;
+
+    @FXML
+    private TableColumn<?, ?> menu_col_productName;
+
+    @FXML
+    private TableColumn<?, ?> menu_col_quantity;
+
+    @FXML
     private Button inventory_deleteBtn;
+
+    @FXML
+    private AnchorPane dashboard_form;
 
     @FXML
     private AnchorPane inventory_form;
@@ -126,53 +170,9 @@ public class MainForm implements Initializable  {
     @FXML
     private AnchorPane main_Form;
 
-    @FXML
-    private Button menu_btn;
 
     @FXML
     private Label username;
-
-    @FXML
-    private AnchorPane menu_Form;
-
-    @FXML
-    private TextField menu_amount;
-
-    @FXML
-    private Label menu_change;
-
-    @FXML
-    private TableColumn<productData, String> menu_col_price;
-
-    @FXML
-    private TableColumn<productData, String> menu_col_productName;
-
-    @FXML
-    private TableColumn<productData, String> menu_col_quantity;
-
-    @FXML
-    private GridPane menu_gridPane;
-
-    @FXML
-    private Button menu_payBtn;
-
-    @FXML
-    private Button menu_receiptBtn;
-
-    @FXML
-    private Button menu_removeBtn;
-
-    @FXML
-    private TableView<productData> menu_tableView;
-
-    @FXML
-    private Label menu_total;
-
-    @FXML
-    private AreaChart<?, ?> dashboard_incomeChart;
-
-    @FXML
-    private BarChart<?, ?> dashboard_CustomerChart;
 
 
     private Alert alert;
@@ -183,136 +183,118 @@ public class MainForm implements Initializable  {
     private ResultSet result;
 
     private Image image;
-
-
     private ObservableList<productData> cardListData = FXCollections.observableArrayList();
+    private String[] typeList = {"Meals", "Drinks"};
 
-    public void dashboardDisplayNC() {
+    public void inventoryTypeList() {
+        if (inventory_type != null) {
+            List<String> typeL = new ArrayList<>();
 
-        String sql = "SELECT COUNT(id) FROM receipt";
-        connect = database.connectDB();
-
-        try {
-            int nc = 0;
-            prepare = connect.prepareStatement(sql);
-            result = prepare.executeQuery();
-
-            if (result.next()) {
-                nc = result.getInt("COUNT(id)");
-            }
-            dashboard_NC.setText(String.valueOf(nc));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void dashboardDisplayTI() {
-        Date date = new Date();
-        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-
-        String sql = "SELECT SUM(total) FROM receipt WHERE date = '"
-                + sqlDate + "'";
-
-        connect = database.connectDB();
-
-        try {
-            double ti = 0;
-            prepare = connect.prepareStatement(sql);
-            result = prepare.executeQuery();
-
-            if (result.next()) {
-                ti = result.getDouble("SUM(total)");
+            for (String data : typeList) {
+                typeL.add(data);
             }
 
-            dashboard_TI.setText("$" + ti);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            ObservableList listData = FXCollections.observableArrayList(typeL);
+            inventory_type.setItems(listData);
+        } else {
+            System.err.println("ComboBox inventory_type is null.");
         }
     }
 
-    public void dashboardTotalI() {
-        String sql = "SELECT SUM(total) FROM receipt";
 
-        connect = database.connectDB();
 
-        try {
-            float ti = 0;
-            prepare = connect.prepareStatement(sql);
-            result = prepare.executeQuery();
+    private String[] statusList = {"Available", "Unavailable"};
 
-            if (result.next()) {
-                ti = result.getFloat("SUM(total)");
-            }
-            dashboard_TotalI.setText("$" + ti);
+    public void inventoryStatusList() {
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        List<String> statusL = new ArrayList<>();
+
+        for (String data : statusList) {
+            statusL.add(data);
         }
+
+        ObservableList listData = FXCollections.observableArrayList(statusL);
+        inventory_status.setItems(listData);
+
     }
 
-    public void dashboardNSP() {
+    public ObservableList<productData> inventoryDataList() {
 
-        String sql = "SELECT COUNT(quantity) FROM customer";
+        ObservableList<productData> listData = FXCollections.observableArrayList();
+
+        String sql = "SELECT * FROM product";
 
         connect = database.connectDB();
 
         try {
-            int q = 0;
+
             prepare = connect.prepareStatement(sql);
             result = prepare.executeQuery();
 
-            if (result.next()) {
-                q = result.getInt("COUNT(quantity)");
-            }
-            dashboard_NSP.setText(String.valueOf(q));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void dashboardIncomeChart() {
-        dashboard_incomeChart.getData().clear();
-
-        String sql = "SELECT date, SUM(total) FROM receipt GROUP BY date ORDER BY TIMESTAMP(date)";
-        connect = database.connectDB();
-        XYChart.Series chart = new XYChart.Series();
-        try {
-            prepare = connect.prepareStatement(sql);
-            result = prepare.executeQuery();
+            productData prodData;
 
             while (result.next()) {
-                chart.getData().add(new XYChart.Data<>(result.getString(1), result.getFloat(2)));
-            }
 
-            dashboard_incomeChart.getData().add(chart);
+                prodData = new productData(result.getInt("id"),
+                        result.getString("prod_id"),
+                        result.getString("prod_name"),
+                        result.getString("type"),
+                        result.getInt("stock"),
+                        result.getDouble("price"),
+                        result.getString("status"),
+                        result.getString("image"),
+                        result.getDate("date"));
+
+                listData.add(prodData);
+
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return listData;
     }
 
-    public void dashboardCustomerChart(){
-        dashboard_CustomerChart.getData().clear();
+    // TO SHOW DATA ON OUR TABLE
+    private ObservableList<productData> inventoryListData;
 
-        String sql = "SELECT date, COUNT(id) FROM receipt GROUP BY date ORDER BY TIMESTAMP(date)";
-        connect = database.connectDB();
-        XYChart.Series chart = new XYChart.Series();
-        try {
-            prepare = connect.prepareStatement(sql);
-            result = prepare.executeQuery();
+    public void inventoryShowData() {
+        inventoryListData = inventoryDataList();
 
-            while (result.next()) {
-                chart.getData().add(new XYChart.Data<>(result.getString(1), result.getInt(2)));
-            }
+        inventory_col_prodcutId.setCellValueFactory(new PropertyValueFactory<>("productId"));
+        inventory_col_productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        inventory_col_type.setCellValueFactory(new PropertyValueFactory<>("type"));
+        inventory_col_stoke.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        inventory_col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
+        inventory_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        inventory_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-            dashboard_CustomerChart.getData().add(chart);
+        inventory_tableView.setItems(inventoryListData);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+    }
+
+    public void inventorySelectData() {
+
+        productData prodData = (productData) inventory_tableView.getSelectionModel().getSelectedItem();
+        int num = inventory_tableView.getSelectionModel().getSelectedIndex();
+
+        if ((num - 1) < -1) {
+            return;
         }
+
+        inventory_productId.setText(prodData.getProductId());
+        inventory_productName.setText(prodData.getProductName());
+        inventory_stock.setText(String.valueOf(prodData.getStock()));
+        inventory_price.setText(String.valueOf(prodData.getPrice()));
+
+        data.path = prodData.getImage();
+
+        String path = "File:" + prodData.getImage();
+        data.date = String.valueOf(prodData.getDate());
+        data.id = prodData.getId();
+
+        image = new Image(path, 120, 127, false, true);
+        inventory_imageView.setImage(image);
     }
 
     public void inventoryAddBtn() {
@@ -520,7 +502,6 @@ public class MainForm implements Initializable  {
 
     }
 
-    // LETS MAKE A BEHAVIOR FOR IMPORT BTN FIRST
     public void inventoryImportBtn() {
 
         FileChooser openFile = new FileChooser();
@@ -535,115 +516,6 @@ public class MainForm implements Initializable  {
 
             inventory_imageView.setImage(image);
         }
-    }
-
-    // MERGE ALL DATAS
-    public ObservableList<productData> inventoryDataList() {
-
-        ObservableList<productData> listData = FXCollections.observableArrayList();
-
-        String sql = "SELECT * FROM product";
-
-        connect = database.connectDB();
-
-        try {
-
-            prepare = connect.prepareStatement(sql);
-            result = prepare.executeQuery();
-
-            productData prodData;
-
-            while (result.next()) {
-
-                prodData = new productData(result.getInt("id"),
-                        result.getString("prod_id"),
-                        result.getString("prod_name"),
-                        result.getString("type"),
-                        result.getInt("stock"),
-                        result.getDouble("price"),
-                        result.getString("status"),
-                        result.getString("image"),
-                        result.getDate("date"));
-
-                listData.add(prodData);
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return listData;
-    }
-
-    // TO SHOW DATA ON OUR TABLE
-    private ObservableList<productData> inventoryListData;
-
-    public void inventoryShowData() {
-        inventoryListData = inventoryDataList();
-
-        inventory_col_prodcutId.setCellValueFactory(new PropertyValueFactory<>("productId"));
-        inventory_col_productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
-        inventory_col_type.setCellValueFactory(new PropertyValueFactory<>("type"));
-        inventory_col_stoke.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        inventory_col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
-        inventory_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
-        inventory_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
-
-        inventory_tableView.setItems(inventoryListData);
-
-    }
-
-    public void inventorySelectData() {
-
-        productData prodData = inventory_tableView.getSelectionModel().getSelectedItem();
-        int num = inventory_tableView.getSelectionModel().getSelectedIndex();
-
-        if ((num - 1) < -1) {
-            return;
-        }
-
-        inventory_productId.setText(prodData.getProductId());
-        inventory_productName.setText(prodData.getProductName());
-        inventory_stock.setText(String.valueOf(prodData.getStock()));
-        inventory_price.setText(String.valueOf(prodData.getPrice()));
-
-        data.path = prodData.getImage();
-
-        String path = "File:" + prodData.getImage();
-        data.date = String.valueOf(prodData.getDate());
-        data.id = prodData.getId();
-
-        image = new Image(path, 120, 127, false, true);
-        inventory_imageView.setImage(image);
-    }
-
-    private String[] typeList = {"Meals", "Drinks"};
-
-    public void inventoryTypeList() {
-
-        List<String> typeL = new ArrayList<>();
-
-        for (String data : typeList) {
-            typeL.add(data);
-        }
-
-        ObservableList listData = FXCollections.observableArrayList(typeL);
-        inventory_type.setItems(listData);
-    }
-
-    private String[] statusList = {"Available", "Unavailable"};
-
-    public void inventoryStatusList() {
-
-        List<String> statusL = new ArrayList<>();
-
-        for (String data : statusList) {
-            statusL.add(data);
-        }
-
-        ObservableList listData = FXCollections.observableArrayList(statusL);
-        inventory_status.setItems(listData);
-
     }
 
     public ObservableList<productData> menuGetData() {
@@ -924,34 +796,7 @@ public class MainForm implements Initializable  {
         }
     }
 
-    public void menuReceiptBtn() {
 
-        if (totalP == 0 || menu_amount.getText().isEmpty()) {
-            alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error Message");
-            alert.setContentText("Please order first");
-            alert.showAndWait();
-        } else {
-            HashMap map = new HashMap();
-            map.put("getReceipt", (cID - 1));
-
-            try {
-
-                JasperDesign jDesign = JRXmlLoader.load("C:\\Users\\WINDOWS 10\\Documents\\NetBeansProjects\\cafeShopManagementSystem\\src\\cafeshopmanagementsystem\\report.jrxml");
-                JasperReport jReport = JasperCompileManager.compileReport(jDesign);
-                JasperPrint jPrint = JasperFillManager.fillReport(jReport, map, connect);
-
-                JasperViewer.viewReport(jPrint, false);
-
-                menuRestart();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-
-    }
 
     public void menuRestart() {
         totalP = 0;
@@ -1038,7 +883,6 @@ public class MainForm implements Initializable  {
 
         customers_tableView.setItems(customersListData);
     }
-
     public void switchForm(ActionEvent event) {
 
         if (event.getSource() == dashboard_btn) {
@@ -1047,12 +891,7 @@ public class MainForm implements Initializable  {
             menu_Form.setVisible(false);
             customers_form.setVisible(false);
 
-            dashboardDisplayNC();
-            dashboardDisplayTI();
-            dashboardTotalI();
-            dashboardNSP();
-            dashboardIncomeChart();
-            dashboardCustomerChart();
+
 
         } else if (event.getSource() == inventory_btn) {
             dashboard_form.setVisible(false);
@@ -1069,20 +908,18 @@ public class MainForm implements Initializable  {
             menu_Form.setVisible(true);
             customers_form.setVisible(false);
 
-            menuDisplayCard();
-            menuDisplayTotal();
-            menuShowOrderData();
+
         } else if (event.getSource() == customers_btn) {
             dashboard_form.setVisible(false);
             inventory_form.setVisible(false);
             menu_Form.setVisible(false);
             customers_form.setVisible(true);
 
-            customersShowData();
         }
 
     }
-// LETS PROCEED TO OUR DASHBOARD FORM : )
+
+
 
     public void logout() {
 
@@ -1100,7 +937,7 @@ public class MainForm implements Initializable  {
                 logout_btn.getScene().getWindow().hide();
 
                 // LINK YOUR LOGIN FORM AND SHOW IT
-                Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("hello-view.fxml"));
 
                 Stage stage = new Stage();
                 Scene scene = new Scene(root);
@@ -1117,37 +954,32 @@ public class MainForm implements Initializable  {
         }
 
     }
-
     public void displayUsername() {
-
-        String user = data.username;
-        user = user.substring(0, 1).toUpperCase() + user.substring(1);
-
-        username.setText(user);
-
+        if (data.username == null || data.username.isEmpty()) {
+            // If data or data.username is null or empty, set default label text
+            if (username != null) {
+                username.setText("No username available");
+            } else {
+                System.err.println("Label username is null.");
+            }
+        } else {
+            // If data.username is not null or empty, capitalize the first letter and display
+            String user = data.username.substring(0, 1).toUpperCase() + data.username.substring(1);
+            if (username != null) {
+                username.setText(user);
+            } else {
+                System.err.println("Label username is null.");
+            }
+        }
     }
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         displayUsername();
-
-        dashboardDisplayNC();
-        dashboardDisplayTI();
-        dashboardTotalI();
-        dashboardNSP();
-        dashboardIncomeChart();
-        dashboardCustomerChart();
-
         inventoryTypeList();
         inventoryStatusList();
-        inventoryShowData();
-
-        menuDisplayCard();
-        menuGetOrder();
-        menuDisplayTotal();
-        menuShowOrderData();
-
-        customersShowData();
 
     }
 
