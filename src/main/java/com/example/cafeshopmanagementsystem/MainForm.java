@@ -30,7 +30,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -143,13 +142,13 @@ public class MainForm implements Initializable  {
     private Label menu_change;
 
     @FXML
-    private TableColumn<?, ?> menu_col_price;
+    private TableColumn<productData, String> menu_col_price;
 
     @FXML
-    private TableColumn<?, ?> menu_col_productName;
+    private TableColumn<productData, String> menu_col_productName;
 
     @FXML
-    private TableColumn<?, ?> menu_col_quantity;
+    private TableColumn<productData, String> menu_col_quantity;
 
     @FXML
     private GridPane menu_gridPane;
@@ -164,11 +163,16 @@ public class MainForm implements Initializable  {
     private Button menu_removeBtn;
 
     @FXML
-    private TableView<?> menu_tableView;
+    private TableView<productData> menu_tableView;
 
     @FXML
     private Label menu_total;
 
+    @FXML
+    private AreaChart<?, ?> dashboard_incomeChart;
+
+    @FXML
+    private BarChart<?, ?> dashboard_CustomerChart;
 
 
     private Alert alert;
@@ -182,6 +186,134 @@ public class MainForm implements Initializable  {
 
 
     private ObservableList<productData> cardListData = FXCollections.observableArrayList();
+
+    public void dashboardDisplayNC() {
+
+        String sql = "SELECT COUNT(id) FROM receipt";
+        connect = database.connectDB();
+
+        try {
+            int nc = 0;
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                nc = result.getInt("COUNT(id)");
+            }
+            dashboard_NC.setText(String.valueOf(nc));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void dashboardDisplayTI() {
+        Date date = new Date();
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+        String sql = "SELECT SUM(total) FROM receipt WHERE date = '"
+                + sqlDate + "'";
+
+        connect = database.connectDB();
+
+        try {
+            double ti = 0;
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                ti = result.getDouble("SUM(total)");
+            }
+
+            dashboard_TI.setText("$" + ti);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dashboardTotalI() {
+        String sql = "SELECT SUM(total) FROM receipt";
+
+        connect = database.connectDB();
+
+        try {
+            float ti = 0;
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                ti = result.getFloat("SUM(total)");
+            }
+            dashboard_TotalI.setText("$" + ti);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dashboardNSP() {
+
+        String sql = "SELECT COUNT(quantity) FROM customer";
+
+        connect = database.connectDB();
+
+        try {
+            int q = 0;
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                q = result.getInt("COUNT(quantity)");
+            }
+            dashboard_NSP.setText(String.valueOf(q));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dashboardIncomeChart() {
+        dashboard_incomeChart.getData().clear();
+
+        String sql = "SELECT date, SUM(total) FROM receipt GROUP BY date ORDER BY TIMESTAMP(date)";
+        connect = database.connectDB();
+        XYChart.Series chart = new XYChart.Series();
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                chart.getData().add(new XYChart.Data<>(result.getString(1), result.getFloat(2)));
+            }
+
+            dashboard_incomeChart.getData().add(chart);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dashboardCustomerChart(){
+        dashboard_CustomerChart.getData().clear();
+
+        String sql = "SELECT date, COUNT(id) FROM receipt GROUP BY date ORDER BY TIMESTAMP(date)";
+        connect = database.connectDB();
+        XYChart.Series chart = new XYChart.Series();
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                chart.getData().add(new XYChart.Data<>(result.getString(1), result.getInt(2)));
+            }
+
+            dashboard_CustomerChart.getData().add(chart);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void inventoryAddBtn() {
 
@@ -261,19 +393,23 @@ public class MainForm implements Initializable  {
     }
 
     public void inventoryUpdateBtn() {
+
         if (inventory_productId.getText().isEmpty()
                 || inventory_productName.getText().isEmpty()
                 || inventory_type.getSelectionModel().getSelectedItem() == null
                 || inventory_stock.getText().isEmpty()
                 || inventory_price.getText().isEmpty()
                 || inventory_status.getSelectionModel().getSelectedItem() == null
-                || data.path == null || data.id == null) { // Checking if data.id is null
+                || data.path == null || data.id == 0) {
+
             alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
             alert.setContentText("Please fill all blank fields");
             alert.showAndWait();
+
         } else {
+
             String path = data.path;
             path = path.replace("\\", "\\\\");
 
@@ -285,18 +421,19 @@ public class MainForm implements Initializable  {
                     + inventory_price.getText() + "', status = '"
                     + inventory_status.getSelectionModel().getSelectedItem() + "', image = '"
                     + path + "', date = '"
-                    + data.date + "' WHERE id = " + (data.id != null ? data.id.intValue() : null); // Null check added here
+                    + data.date + "' WHERE id = " + data.id;
 
             connect = database.connectDB();
 
             try {
+
                 alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Error Message");
                 alert.setHeaderText(null);
                 alert.setContentText("Are you sure you want to UPDATE PRoduct ID: " + inventory_productId.getText() + "?");
                 Optional<ButtonType> option = alert.showAndWait();
 
-                if (option.isPresent() && option.get() == ButtonType.OK) {
+                if (option.get().equals(ButtonType.OK)) {
                     prepare = connect.prepareStatement(updateData);
                     prepare.executeUpdate();
 
@@ -322,7 +459,6 @@ public class MainForm implements Initializable  {
             }
         }
     }
-
 
     public void inventoryDeleteBtn() {
         if (data.id == 0) {
@@ -384,47 +520,24 @@ public class MainForm implements Initializable  {
 
     }
 
-
+    // LETS MAKE A BEHAVIOR FOR IMPORT BTN FIRST
     public void inventoryImportBtn() {
 
         FileChooser openFile = new FileChooser();
-        openFile.getExtensionFilters().add(new ExtensionFilter("Open Image File", "*.png", "*.jpg"));
+        openFile.getExtensionFilters().add(new ExtensionFilter("Open Image File", "*png", "*jpg"));
 
         File file = openFile.showOpenDialog(main_Form.getScene().getWindow());
 
         if (file != null) {
 
             data.path = file.getAbsolutePath();
-            image = new Image(file.toURI().toString(), 124, 128, false, true);
+            image = new Image(file.toURI().toString(), 120, 127, false, true);
 
             inventory_imageView.setImage(image);
         }
     }
 
-    public void inventorySelectData() {
-
-        productData prodData = inventory_tableView.getSelectionModel().getSelectedItem();
-        int num = inventory_tableView.getSelectionModel().getSelectedIndex();
-
-        if ((num - 1) < -1) {
-            return;
-        }
-
-        inventory_productId.setText(prodData.getProductId());
-        inventory_productName.setText(prodData.getProductName());
-        inventory_stock.setText(String.valueOf(prodData.getStock()));
-        inventory_price.setText(String.valueOf(prodData.getPrice()));
-
-        data.path = prodData.getImage();
-
-        String path = "File:" + prodData.getImage();
-        data.date = String.valueOf(prodData.getDate());
-        data.id = prodData.getId();
-
-        image = new Image(path, 124, 128, false, true);
-        inventory_imageView.setImage(image);
-    }
-
+    // MERGE ALL DATAS
     public ObservableList<productData> inventoryDataList() {
 
         ObservableList<productData> listData = FXCollections.observableArrayList();
@@ -462,6 +575,7 @@ public class MainForm implements Initializable  {
         return listData;
     }
 
+    // TO SHOW DATA ON OUR TABLE
     private ObservableList<productData> inventoryListData;
 
     public void inventoryShowData() {
@@ -476,6 +590,59 @@ public class MainForm implements Initializable  {
         inventory_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
 
         inventory_tableView.setItems(inventoryListData);
+
+    }
+
+    public void inventorySelectData() {
+
+        productData prodData = inventory_tableView.getSelectionModel().getSelectedItem();
+        int num = inventory_tableView.getSelectionModel().getSelectedIndex();
+
+        if ((num - 1) < -1) {
+            return;
+        }
+
+        inventory_productId.setText(prodData.getProductId());
+        inventory_productName.setText(prodData.getProductName());
+        inventory_stock.setText(String.valueOf(prodData.getStock()));
+        inventory_price.setText(String.valueOf(prodData.getPrice()));
+
+        data.path = prodData.getImage();
+
+        String path = "File:" + prodData.getImage();
+        data.date = String.valueOf(prodData.getDate());
+        data.id = prodData.getId();
+
+        image = new Image(path, 120, 127, false, true);
+        inventory_imageView.setImage(image);
+    }
+
+    private String[] typeList = {"Meals", "Drinks"};
+
+    public void inventoryTypeList() {
+
+        List<String> typeL = new ArrayList<>();
+
+        for (String data : typeList) {
+            typeL.add(data);
+        }
+
+        ObservableList listData = FXCollections.observableArrayList(typeL);
+        inventory_type.setItems(listData);
+    }
+
+    private String[] statusList = {"Available", "Unavailable"};
+
+    public void inventoryStatusList() {
+
+        List<String> statusL = new ArrayList<>();
+
+        for (String data : statusList) {
+            statusL.add(data);
+        }
+
+        ObservableList listData = FXCollections.observableArrayList(statusL);
+        inventory_status.setItems(listData);
 
     }
 
@@ -533,7 +700,7 @@ public class MainForm implements Initializable  {
                 cardProductController cardC = load.getController();
                 cardC.setData(cardListData.get(q));
 
-                if (column == 2) {
+                if (column == 3) {
                     column = 0;
                     row += 1;
                 }
@@ -548,93 +715,80 @@ public class MainForm implements Initializable  {
         }
     }
 
-    public void switchForm(ActionEvent event) {
+    public ObservableList<productData> menuGetOrder() {
+        customerID();
+        ObservableList<productData> listData = FXCollections.observableArrayList();
 
-        if (event.getSource() == dashboard_btn) {
-            dashboard_form.setVisible(true);
-            inventory_form.setVisible(false);
-            menu_Form.setVisible(false);
+        String sql = "SELECT * FROM customer WHERE customer_id = " + cID;
 
-        } else if (event.getSource() == inventory_btn) {
-            dashboard_form.setVisible(false);
-            inventory_form.setVisible(true);
-            menu_Form.setVisible(false);
-
-            inventoryTypeList();
-            inventoryStatusList();
-            inventoryShowData();
-        } else if (event.getSource() == menu_btn) {
-            dashboard_form.setVisible(false);
-            inventory_form.setVisible(false);
-            menu_Form.setVisible(true);
-
-            menuDisplayCard();
-        }
-
-    }
-    private String[] typeList = {"Meals", "Drinks"};
-
-    public void inventoryTypeList() {
-        if (inventory_type != null) {
-            List<String> typeL = new ArrayList<>();
-
-            for (String data : typeList) {
-                typeL.add(data);
-            }
-
-            ObservableList listData = FXCollections.observableArrayList(typeL);
-            inventory_type.setItems(listData);
-        } else {
-            System.err.println("ComboBox inventory_type is null.");
-        }
-    }
-
-
-    private String[] statusList = {"Available", "Unavailable"};
-
-    public void inventoryStatusList() {
-
-        List<String> statusL = new ArrayList<>();
-
-        for (String data : statusList) {
-            statusL.add(data);
-        }
-
-        ObservableList listData = FXCollections.observableArrayList(statusL);
-        inventory_status.setItems(listData);
-
-    }
-
-
-
-
-
-    public void logout() {
+        connect = database.connectDB();
 
         try {
 
-            alert = new Alert(AlertType.CONFIRMATION);
-            alert.setTitle("Error Message");
-            alert.setHeaderText(null);
-            alert.setContentText("Are you sure you want to logout?");
-            Optional<ButtonType> option = alert.showAndWait();
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
 
-            if (option.get().equals(ButtonType.OK)) {
+            productData prod;
 
-                // TO HIDE MAIN FORM
-                logout_btn.getScene().getWindow().hide();
+            while (result.next()) {
+                prod = new productData(result.getInt("id"),
+                        result.getString("prod_id"),
+                        result.getString("prod_name"),
+                        result.getString("type"),
+                        result.getInt("quantity"),
+                        result.getDouble("price"),
+                        result.getString("image"),
+                        result.getDate("date"));
+                listData.add(prod);
+            }
 
-                // LINK YOUR LOGIN FORM AND SHOW IT
-                Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-                Stage stage = new Stage();
-                Scene scene = new Scene(root);
+        return listData;
+    }
 
-                stage.setTitle("Cafe Shop Management System");
+    private ObservableList<productData> menuOrderListData;
 
-                stage.setScene(scene);
-                stage.show();
+    public void menuShowOrderData() {
+        menuOrderListData = menuGetOrder();
 
+        menu_col_productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        menu_col_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        menu_col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        menu_tableView.setItems(menuOrderListData);
+    }
+    private int getid;
+
+    public void menuSelectOrder() {
+        productData prod = (productData) menu_tableView.getSelectionModel().getSelectedItem();
+        int num = menu_tableView.getSelectionModel().getSelectedIndex();
+
+        if ((num - 1) < -1) {
+            return;
+        }
+        // TO GET THE ID PER ORDER
+        getid = prod.getId();
+
+    }
+
+    private double totalP;
+
+    public void menuGetTotal() {
+        customerID();
+        String total = "SELECT SUM(price) FROM customer WHERE customer_id = " + cID;
+
+        connect = database.connectDB();
+
+        try {
+
+            prepare = connect.prepareStatement(total);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                totalP = result.getDouble("SUM(price)");
             }
 
         } catch (Exception e) {
@@ -642,35 +796,170 @@ public class MainForm implements Initializable  {
         }
 
     }
-    public void displayUsername() {
-        if (data.username == null || data.username.isEmpty()) {
-            // If data or data.username is null or empty, set default label text
-            if (username != null) {
-                username.setText("No username available");
-            } else {
-                System.err.println("Label username is null.");
-            }
+
+    public void menuDisplayTotal() {
+        menuGetTotal();
+        menu_total.setText("$" + totalP);
+    }
+
+    private double amount;
+    private double change;
+
+    public void menuAmount() {
+        menuGetTotal();
+        if (menu_amount.getText().isEmpty() || totalP == 0) {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Invalid :3");
+            alert.showAndWait();
         } else {
-            // If data.username is not null or empty, capitalize the first letter and display
-            String user = data.username.substring(0, 1).toUpperCase() + data.username.substring(1);
-            if (username != null) {
-                username.setText(user);
+            amount = Double.parseDouble(menu_amount.getText());
+            if (amount < totalP) {
+                menu_amount.setText("");
             } else {
-                System.err.println("Label username is null.");
+                change = (amount - totalP);
+                menu_change.setText("$" + change);
             }
         }
     }
 
+    public void menuPayBtn() {
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+        if (totalP == 0) {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Please choose your order first!");
+            alert.showAndWait();
+        } else {
+            menuGetTotal();
+            String insertPay = "INSERT INTO receipt (customer_id, total, date, em_username) "
+                    + "VALUES(?,?,?,?)";
 
-        displayUsername();
-        inventoryTypeList();
-        inventoryStatusList();
-        inventoryShowData();
-        menuDisplayCard();
+            connect = database.connectDB();
 
+            try {
+
+                if (amount == 0) {
+                    alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error Messaged");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Something wrong :3");
+                    alert.showAndWait();
+                } else {
+                    alert = new Alert(AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmation Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Are you sure?");
+                    Optional<ButtonType> option = alert.showAndWait();
+
+                    if (option.get().equals(ButtonType.OK)) {
+                        customerID();
+                        menuGetTotal();
+                        prepare = connect.prepareStatement(insertPay);
+                        prepare.setString(1, String.valueOf(cID));
+                        prepare.setString(2, String.valueOf(totalP));
+
+                        Date date = new Date();
+                        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+                        prepare.setString(3, String.valueOf(sqlDate));
+                        prepare.setString(4, data.username);
+
+                        prepare.executeUpdate();
+
+                        alert = new Alert(AlertType.INFORMATION);
+                        alert.setTitle("Infomation Message");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Successful.");
+                        alert.showAndWait();
+
+                        menuShowOrderData();
+
+                    } else {
+                        alert = new Alert(AlertType.WARNING);
+                        alert.setTitle("Infomation Message");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Cancelled.");
+                        alert.showAndWait();
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void menuRemoveBtn() {
+
+        if (getid == 0) {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Please select the order you want to remove");
+            alert.showAndWait();
+        } else {
+            String deleteData = "DELETE FROM customer WHERE id = " + getid;
+            connect = database.connectDB();
+            try {
+                alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Are you sure you want to delete this order?");
+                Optional<ButtonType> option = alert.showAndWait();
+
+                if (option.get().equals(ButtonType.OK)) {
+                    prepare = connect.prepareStatement(deleteData);
+                    prepare.executeUpdate();
+                }
+
+                menuShowOrderData();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    public void menuReceiptBtn() {
+
+        if (totalP == 0 || menu_amount.getText().isEmpty()) {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setContentText("Please order first");
+            alert.showAndWait();
+        } else {
+            HashMap map = new HashMap();
+            map.put("getReceipt", (cID - 1));
+
+            try {
+
+                JasperDesign jDesign = JRXmlLoader.load("C:\\Users\\WINDOWS 10\\Documents\\NetBeansProjects\\cafeShopManagementSystem\\src\\cafeshopmanagementsystem\\report.jrxml");
+                JasperReport jReport = JasperCompileManager.compileReport(jDesign);
+                JasperPrint jPrint = JasperFillManager.fillReport(jReport, map, connect);
+
+                JasperViewer.viewReport(jPrint, false);
+
+                menuRestart();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+    public void menuRestart() {
+        totalP = 0;
+        change = 0;
+        amount = 0;
+        menu_total.setText("$0.0");
+        menu_amount.setText("");
+        menu_change.setText("$0.0");
     }
 
     private int cID;
@@ -709,6 +998,157 @@ public class MainForm implements Initializable  {
         }
     }
 
-    public void menuGetTotal() {
+    public ObservableList<customersData> customersDataList() {
+
+        ObservableList<customersData> listData = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM receipt";
+        connect = database.connectDB();
+
+        try {
+
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+            customersData cData;
+
+            while (result.next()) {
+                cData = new customersData(result.getInt("id"),
+                        result.getInt("customer_id"),
+                        result.getDouble("total"),
+                        result.getDate("date"),
+                        result.getString("em_username"));
+
+                listData.add(cData);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listData;
     }
+
+    private ObservableList<customersData> customersListData;
+
+    public void customersShowData() {
+        customersListData = customersDataList();
+
+        customers_col_customerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        customers_col_total.setCellValueFactory(new PropertyValueFactory<>("total"));
+        customers_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        customers_col_cashier.setCellValueFactory(new PropertyValueFactory<>("emUsername"));
+
+        customers_tableView.setItems(customersListData);
+    }
+
+    public void switchForm(ActionEvent event) {
+
+        if (event.getSource() == dashboard_btn) {
+            dashboard_form.setVisible(true);
+            inventory_form.setVisible(false);
+            menu_Form.setVisible(false);
+            customers_form.setVisible(false);
+
+            dashboardDisplayNC();
+            dashboardDisplayTI();
+            dashboardTotalI();
+            dashboardNSP();
+            dashboardIncomeChart();
+            dashboardCustomerChart();
+
+        } else if (event.getSource() == inventory_btn) {
+            dashboard_form.setVisible(false);
+            inventory_form.setVisible(true);
+            menu_Form.setVisible(false);
+            customers_form.setVisible(false);
+
+            inventoryTypeList();
+            inventoryStatusList();
+            inventoryShowData();
+        } else if (event.getSource() == menu_btn) {
+            dashboard_form.setVisible(false);
+            inventory_form.setVisible(false);
+            menu_Form.setVisible(true);
+            customers_form.setVisible(false);
+
+            menuDisplayCard();
+            menuDisplayTotal();
+            menuShowOrderData();
+        } else if (event.getSource() == customers_btn) {
+            dashboard_form.setVisible(false);
+            inventory_form.setVisible(false);
+            menu_Form.setVisible(false);
+            customers_form.setVisible(true);
+
+            customersShowData();
+        }
+
+    }
+// LETS PROCEED TO OUR DASHBOARD FORM : )
+
+    public void logout() {
+
+        try {
+
+            alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Are you sure you want to logout?");
+            Optional<ButtonType> option = alert.showAndWait();
+
+            if (option.get().equals(ButtonType.OK)) {
+
+                // TO HIDE MAIN FORM
+                logout_btn.getScene().getWindow().hide();
+
+                // LINK YOUR LOGIN FORM AND SHOW IT
+                Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+
+                Stage stage = new Stage();
+                Scene scene = new Scene(root);
+
+                stage.setTitle("Cafe Shop Management System");
+
+                stage.setScene(scene);
+                stage.show();
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void displayUsername() {
+
+        String user = data.username;
+        user = user.substring(0, 1).toUpperCase() + user.substring(1);
+
+        username.setText(user);
+
+    }
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        displayUsername();
+
+        dashboardDisplayNC();
+        dashboardDisplayTI();
+        dashboardTotalI();
+        dashboardNSP();
+        dashboardIncomeChart();
+        dashboardCustomerChart();
+
+        inventoryTypeList();
+        inventoryStatusList();
+        inventoryShowData();
+
+        menuDisplayCard();
+        menuGetOrder();
+        menuDisplayTotal();
+        menuShowOrderData();
+
+        customersShowData();
+
+    }
+
 }
