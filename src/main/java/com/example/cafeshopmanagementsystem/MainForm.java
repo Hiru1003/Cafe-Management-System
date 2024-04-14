@@ -20,6 +20,9 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -170,6 +173,23 @@ public class MainForm implements Initializable  {
     @FXML
     private AnchorPane main_Form;
 
+    @FXML
+    private Label dashboard_NC;
+
+    @FXML
+    private Label dashboard_NSP;
+
+    @FXML
+    private Label dashboard_TI;
+
+    @FXML
+    private Label dashboard_TotalI;
+
+    @FXML
+    private AreaChart<?, ?> dashboard_incomeChart;
+
+    @FXML
+    private BarChart<?, ?> dashboard_CustomerChart;
 
     @FXML
     private Label username;
@@ -505,14 +525,14 @@ public class MainForm implements Initializable  {
     public void inventoryImportBtn() {
 
         FileChooser openFile = new FileChooser();
-        openFile.getExtensionFilters().add(new ExtensionFilter("Open Image File", "*png", "*jpg"));
+        openFile.getExtensionFilters().add(new ExtensionFilter("Open Image File", "*.png", "*.jpg"));
 
         File file = openFile.showOpenDialog(main_Form.getScene().getWindow());
 
         if (file != null) {
 
             data.path = file.getAbsolutePath();
-            image = new Image(file.toURI().toString(), 120, 127, false, true);
+            image = new Image(file.toURI().toString(), 124, 128, false, true);
 
             inventory_imageView.setImage(image);
         }
@@ -572,7 +592,7 @@ public class MainForm implements Initializable  {
                 cardProductController cardC = load.getController();
                 cardC.setData(cardListData.get(q));
 
-                if (column == 3) {
+                if (column == 2) {
                     column = 0;
                     row += 1;
                 }
@@ -683,7 +703,7 @@ public class MainForm implements Initializable  {
             alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
-            alert.setContentText("Invalid :3");
+            alert.setContentText("Invalid :|");
             alert.showAndWait();
         } else {
             amount = Double.parseDouble(menu_amount.getText());
@@ -691,7 +711,7 @@ public class MainForm implements Initializable  {
                 menu_amount.setText("");
             } else {
                 change = (amount - totalP);
-                menu_change.setText("$" + change);
+                menu_change.setText("LKR " + change);
             }
         }
     }
@@ -883,6 +903,14 @@ public class MainForm implements Initializable  {
 
         customers_tableView.setItems(customersListData);
     }
+
+
+
+
+
+
+
+
     public void switchForm(ActionEvent event) {
 
         if (event.getSource() == dashboard_btn) {
@@ -891,7 +919,12 @@ public class MainForm implements Initializable  {
             menu_Form.setVisible(false);
             customers_form.setVisible(false);
 
-
+            dashboardDisplayNC();
+            dashboardDisplayTI();
+            dashboardTotalI();
+            dashboardNSP();
+            dashboardIncomeChart();
+            dashboardCustomerChart();
 
         } else if (event.getSource() == inventory_btn) {
             dashboard_form.setVisible(false);
@@ -914,10 +947,146 @@ public class MainForm implements Initializable  {
             inventory_form.setVisible(false);
             menu_Form.setVisible(false);
             customers_form.setVisible(true);
-
+            customersShowData();
         }
 
     }
+
+
+
+
+    public void dashboardDisplayNC() {
+
+        String sql = "SELECT COUNT(id) FROM receipt";
+        connect = database.connectDB();
+
+        try {
+            int nc = 0;
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                nc = result.getInt("COUNT(id)");
+            }
+            dashboard_NC.setText(String.valueOf(nc));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void dashboardDisplayTI() {
+        Date date = new Date();
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+        String sql = "SELECT SUM(total) FROM receipt WHERE date = '"
+                + sqlDate + "'";
+
+        connect = database.connectDB();
+
+        try {
+            double ti = 0;
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                ti = result.getDouble("SUM(total)");
+            }
+
+            dashboard_TI.setText("LKR " + ti);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dashboardTotalI() {
+        String sql = "SELECT SUM(total) FROM receipt";
+
+        connect = database.connectDB();
+
+        try {
+            float ti = 0;
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                ti = result.getFloat("SUM(total)");
+            }
+            dashboard_TotalI.setText("LKR " + ti);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dashboardNSP() {
+
+        String sql = "SELECT COUNT(quantity) FROM customer";
+
+        connect = database.connectDB();
+
+        try {
+            int q = 0;
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                q = result.getInt("COUNT(quantity)");
+            }
+            dashboard_NSP.setText(String.valueOf(q));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dashboardIncomeChart() {
+        dashboard_incomeChart.getData().clear();
+
+        String sql = "SELECT date, SUM(total) FROM receipt GROUP BY date ORDER BY TIMESTAMP(date)";
+        connect = database.connectDB();
+        XYChart.Series chart = new XYChart.Series();
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                chart.getData().add(new XYChart.Data<>(result.getString(1), result.getFloat(2)));
+            }
+
+            dashboard_incomeChart.getData().add(chart);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dashboardCustomerChart(){
+        dashboard_CustomerChart.getData().clear();
+
+        String sql = "SELECT date, COUNT(id) FROM receipt GROUP BY date ORDER BY TIMESTAMP(date)";
+        connect = database.connectDB();
+        XYChart.Series chart = new XYChart.Series();
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                chart.getData().add(new XYChart.Data<>(result.getString(1), result.getInt(2)));
+            }
+
+            dashboard_CustomerChart.getData().add(chart);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
 
 
 
@@ -978,8 +1147,23 @@ public class MainForm implements Initializable  {
     public void initialize(URL location, ResourceBundle resources) {
 
         displayUsername();
+
         inventoryTypeList();
         inventoryStatusList();
+        inventoryShowData();
+
+        dashboardDisplayNC();
+        dashboardDisplayTI();
+        dashboardTotalI();
+        dashboardNSP();
+        dashboardIncomeChart();
+        dashboardCustomerChart();
+
+        menuDisplayCard();
+        menuGetOrder();
+        menuDisplayTotal();
+        menuShowOrderData();
+        customersShowData();
 
     }
 
