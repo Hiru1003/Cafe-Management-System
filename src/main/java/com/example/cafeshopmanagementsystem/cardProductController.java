@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -17,7 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
-public class cardProductController {
+public class cardProductController implements Initializable {
     @FXML
     private AnchorPane card_Form;
 
@@ -60,9 +61,9 @@ public class cardProductController {
         type = prodData.getType();
         prodID = prodData.getProductId();
         prod_name.setText(prodData.getProductName());
-        prod_price.setText("$" + String.valueOf(prodData.getPrice()));
+        prod_price.setText("LKR" + String.valueOf(prodData.getPrice()));
         String path = "File:" + prodData.getImage();
-        image = new Image(path, 190, 94, false, true);
+        image = new Image(path, 200, 200, false, true);
         prod_imageView.setImage(image);
         pr = prodData.getPrice();
 
@@ -196,7 +197,10 @@ public class cardProductController {
     }
 
 
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+
         setQuantity();
     }
 }
