@@ -1,1 +1,1 @@
-JavaFX application for Cafe Mocha
+JavaFX Application for Cafe Mocha
